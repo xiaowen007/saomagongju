@@ -1,0 +1,35 @@
+<view class="container">
+  <!-- 公告栏 -->
+  <view class="notice-card">
+    <view class="notice-badge">公告</view>
+    <view class="notice-content">
+      <text class="notice-title">V2.5.9 新版本发布</text>
+      <text class="notice-text">本次在不影响原有功能和使用习惯的前提下对局部界面UI优化。</text>
+    </view>
+  </view>
+
+  <!-- 主功能网格 -->
+  <view class="feature-grid">
+    <feature-card
+      wx:for="{{features}}"
+      wx:key="title"
+      icon="{{item.icon}}"
+      title="{{item.title}}"
+      desc="{{item.desc}}"
+      bg="{{item.bg}}"
+      url="{{item.url}}"
+      bindtap="onFeatureTap"
+      data-item="{{item}}"
+    />
+  </view>
+
+  <!-- 生成记录入口 -->
+  <view class="generate-record-card" bindtap="goToGenerateRecords">
+    <view class="generate-icon">📝</view>
+    <view class="generate-info">
+      <view class="generate-title">生成记录</view>
+      <view class="generate-desc">查看已生成的条形码和二维码历史</view>
+    </view>
+    <view class="generate-arrow">›</view>
+  </view>
+</view>

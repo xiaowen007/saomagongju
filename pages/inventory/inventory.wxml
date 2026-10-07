@@ -1,0 +1,49 @@
+<view class="container">
+  <view class="card summary-card">
+    <view class="summary-item">
+      <view class="summary-value">{{totalItems}}</view>
+      <view class="summary-label">物料种类</view>
+    </view>
+    <view class="summary-divider"></view>
+    <view class="summary-item">
+      <view class="summary-value warning">{{lowStockItems}}</view>
+      <view class="summary-label">库存预警</view>
+    </view>
+    <view class="summary-divider"></view>
+    <view class="summary-item">
+      <view class="summary-value">{{totalQuantity}}</view>
+      <view class="summary-label">总数量</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">库存物料</view>
+    <view class="search-bar">
+      <input
+        type="text"
+        placeholder="搜索物料名称/条码"
+        value="{{keyword}}"
+        bindinput="onSearchInput"
+      />
+    </view>
+
+    <view class="inventory-list">
+      <view class="inventory-item" wx:for="{{items}}" wx:key="id">
+        <view class="inventory-info">
+          <view class="inventory-name">{{item.name}}</view>
+          <view class="inventory-code">条码：{{item.code}}</view>
+        </view>
+        <view class="inventory-quantity {{item.quantity <= item.threshold ? 'warning' : ''}}">
+          {{item.quantity}}
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{items.length === 0}}" class="empty-state">
+      <view class="icon">📦</view>
+      <text>暂无库存物料</text>
+    </view>
+  </view>
+
+  <view class="btn-primary" bindtap="goScan">扫码录入库存</view>
+</view>

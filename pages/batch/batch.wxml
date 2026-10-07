@@ -1,0 +1,36 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">批量扫码模式</view>
+    <view class="tip">连续扫描多个条码/二维码，扫描结果会自动累计并保存到记录。</view>
+    <view class="btn-primary" bindtap="startBatchScan">开始批量扫码</view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">今日扫描统计</view>
+    <view class="stats">
+      <view class="stat-item">
+        <view class="stat-value">{{todayCount}}</view>
+        <view class="stat-label">今日扫描</view>
+      </view>
+      <view class="stat-item">
+        <view class="stat-value">{{totalCount}}</view>
+        <view class="stat-label">累计扫描</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">最近扫描</view>
+    <record-item
+      wx:for="{{recentRecords}}"
+      wx:key="id"
+      title="{{item.code}}"
+      meta="{{item.createdAt}}"
+      badge="{{item.scanType}}"
+    />
+    <view wx:if="{{recentRecords.length === 0}}" class="empty-state">
+      <view class="icon">📭</view>
+      <text>暂无批量扫码记录</text>
+    </view>
+  </view>
+</view>

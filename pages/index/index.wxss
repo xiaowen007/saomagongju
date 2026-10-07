@@ -1,0 +1,91 @@
+/* 公告栏 */
+.notice-card {
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx;
+  margin-bottom: 24rpx;
+  display: flex;
+  align-items: flex-start;
+  box-shadow: 0 4rpx 24rpx rgba(0, 0, 0, 0.04);
+}
+
+.notice-badge {
+  background: #FFF4E6;
+  color: #FF9C00;
+  font-size: 22rpx;
+  padding: 6rpx 14rpx;
+  border-radius: 8rpx;
+  margin-right: 16rpx;
+  flex-shrink: 0;
+  font-weight: 500;
+}
+
+.notice-content {
+  flex: 1;
+}
+
+.notice-title {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 6rpx;
+}
+
+.notice-text {
+  font-size: 24rpx;
+  color: #999;
+  line-height: 1.5;
+  display: block;
+}
+
+/* 功能网格 */
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 24rpx;
+}
+
+/* 生成记录 */
+.generate-record-card {
+  background: #EEF5FF;
+  border-radius: 24rpx;
+  padding: 28rpx;
+  display: flex;
+  align-items: center;
+}
+
+.generate-icon {
+  width: 80rpx;
+  height: 80rpx;
+  background: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 40rpx;
+  margin-right: 24rpx;
+  flex-shrink: 0;
+}
+
+.generate-info {
+  flex: 1;
+}
+
+.generate-title {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 600;
+  margin-bottom: 6rpx;
+}
+
+.generate-desc {
+  font-size: 24rpx;
+  color: #888;
+}
+
+.generate-arrow {
+  color: #bbb;
+  font-size: 44rpx;
+}

@@ -1,0 +1,35 @@
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.tip {
+  font-size: 26rpx;
+  color: #888;
+  margin-bottom: 28rpx;
+  line-height: 1.6;
+}
+
+.stats {
+  display: flex;
+  justify-content: space-around;
+  padding: 20rpx 0;
+}
+
+.stat-item {
+  text-align: center;
+}
+
+.stat-value {
+  font-size: 56rpx;
+  font-weight: 700;
+  color: #5B6CFF;
+}
+
+.stat-label {
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 8rpx;
+}

@@ -1,0 +1,45 @@
+<view class="container">
+  <view class="card">
+    <view class="section-title">存储设置</view>
+    <view class="setting-row">
+      <view class="setting-label">当前存储模式</view>
+      <view class="setting-value">{{settings.storageMode === 'cloud' ? '云端存储' : '本地存储'}}</view>
+    </view>
+    <view class="setting-row" bindtap="goCloud">
+      <view class="setting-label">云环境配置</view>
+      <view class="setting-arrow">›</view>
+    </view>
+    <view class="setting-row">
+      <view class="setting-label">自动同步到云端</view>
+      <switch checked="{{settings.autoSync}}" bindchange="toggleAutoSync" color="#5B6CFF"/>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">预警设置</view>
+    <view class="setting-row">
+      <view class="setting-label">库存预警阈值</view>
+      <input type="number" value="{{settings.warnThreshold}}" bindblur="updateThreshold" class="threshold-input"/>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">数据管理</view>
+    <view class="setting-row" bindtap="exportData">
+      <view class="setting-label">导出全部数据</view>
+      <view class="setting-arrow">›</view>
+    </view>
+    <view class="setting-row" bindtap="clearAllData">
+      <view class="setting-label danger">清除所有数据</view>
+      <view class="setting-arrow danger">›</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="section-title">关于</view>
+    <view class="setting-row">
+      <view class="setting-label">版本</view>
+      <view class="setting-value">V2.5.9</view>
+    </view>
+  </view>
+</view>

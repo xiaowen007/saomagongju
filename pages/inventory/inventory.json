@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "盘点",
+  "usingComponents": {
+    "record-item": "../../components/record-item/record-item"
+  }
+}
