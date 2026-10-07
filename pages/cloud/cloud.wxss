@@ -1,3 +1,33 @@
+page {
+  background: #F5F7FA;
+}
+
+.tabs {
+  display: flex;
+  background: #fff;
+  margin: 20rpx 24rpx;
+  border-radius: 16rpx;
+  padding: 6rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 18rpx 0;
+  border-radius: 12rpx;
+  font-size: 30rpx;
+  color: #666;
+}
+
+.tab.active {
+  background: #5B6CFF;
+  color: #fff;
+}
+
+.tab-panel {
+  padding: 0 24rpx 40rpx;
+}
+
 .section-title {
   font-size: 32rpx;
   font-weight: 600;
@@ -41,4 +71,40 @@
 
 .status-text.ready {
   color: #07C160;
+}
+
+.recycle-header {
+  margin-bottom: 16rpx;
+}
+
+.recycle-title {
+  font-size: 30rpx;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.recycle-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.btn-secondary.small {
+  height: 64rpx;
+  line-height: 64rpx;
+  font-size: 26rpx;
+  width: 160rpx;
+}
+
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding-top: 200rpx;
+  color: #999;
+}
+
+.empty-state .icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
 }

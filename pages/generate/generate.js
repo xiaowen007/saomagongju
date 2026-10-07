@@ -9,6 +9,12 @@ Page({
     quickTags: ['https://', 'SN', 'ITEM-', 'WMS-', 'TEMP-']
   },
 
+  onLoad(options) {
+    if (options.type === 'barcode' || options.type === 'qrcode') {
+      this.setData({ type: options.type });
+    }
+  },
+
   switchType(e) {
     this.setData({ type: e.currentTarget.dataset.type, generated: false });
   },

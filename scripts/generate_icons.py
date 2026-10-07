@@ -10,25 +10,30 @@ COLORS = {
 # 用简单几何图形表示 tab 图标
 ICONS = {
     'home': [
-        ('polygon', [(24, 8), (8, 22), (12, 22), (12, 38), (20, 38), (20, 28), (28, 28), (28, 38), (36, 38), (36, 22), (40, 22)]),
+        # 九宫格
+        ('rect', (10, 10, 20, 20)),
+        ('rect', (28, 10, 38, 20)),
+        ('rect', (10, 28, 20, 38)),
+        ('rect', (28, 28, 38, 38)),
     ],
     'batch': [
-        ('rect', (10, 10, 22, 18)),
-        ('rect', (26, 10, 38, 18)),
-        ('rect', (10, 22, 22, 30)),
-        ('rect', (26, 22, 38, 30)),
-        ('rect', (10, 34, 22, 42)),
-        ('rect', (26, 34, 38, 42)),
+        # 扫描框 + 线
+        ('line', (10, 12, 38, 12)),
+        ('line', (10, 36, 38, 36)),
+        ('line', (10, 12, 10, 36)),
+        ('line', (38, 12, 38, 36)),
+        ('line', (14, 24, 34, 24)),
     ],
     'inventory': [
-        ('rect', (8, 8, 40, 40)),
-        ('line', (15, 16, 33, 16)),
-        ('line', (15, 24, 33, 24)),
-        ('line', (15, 32, 33, 32)),
+        # 剪贴板
+        ('round', (12, 12, 36, 40), 4),
+        ('line', (17, 20, 31, 20)),
+        ('line', (17, 27, 31, 27)),
+        ('line', (17, 34, 31, 34)),
     ],
     'settings': [
-        ('circle', (24, 24), 14),
-        ('circle', (24, 24), 6),
+        # 齿轮
+        ('gear', (24, 24), 16),
     ],
 }
 
@@ -39,12 +44,16 @@ def hex_to_rgb(hex_color):
 
 
 def draw_icon(draw, commands, color):
+    import math
     rgb = hex_to_rgb(color)
     for cmd, *args in commands:
         if cmd == 'polygon':
             draw.polygon(args[0], fill=rgb)
         elif cmd == 'rect':
             draw.rectangle(args[0], fill=rgb)
+        elif cmd == 'round':
+            bbox, radius = args
+            draw.rounded_rectangle(bbox, radius, fill=rgb)
         elif cmd == 'line':
             draw.line(args[0], fill=rgb, width=3)
         elif cmd == 'circle':
@@ -54,6 +63,19 @@ def draw_icon(draw, commands, color):
                 draw.ellipse(bbox, outline=rgb, width=3)
             else:
                 draw.ellipse(bbox, fill=rgb)
+        elif cmd == 'gear':
+            center, radius = args
+            cx, cy = center
+            # 外齿
+            for i in range(8):
+                angle = math.radians(i * 45)
+                x1 = cx + (radius - 2) * math.cos(angle)
+                y1 = cy + (radius - 2) * math.sin(angle)
+                x2 = cx + (radius + 3) * math.cos(angle)
+                y2 = cy + (radius + 3) * math.sin(angle)
+                draw.line((x1, y1, x2, y2), fill=rgb, width=3)
+            draw.ellipse([cx-radius+4, cy-radius+4, cx+radius-4, cy+radius-4], outline=rgb, width=3)
+            draw.ellipse([cx-5, cy-5, cx+5, cy+5], fill=rgb)
 
 
 def main():

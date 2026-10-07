@@ -1,6 +1,5 @@
 {
   "navigationBarTitleText": "批量扫码",
-  "usingComponents": {
-    "record-item": "../../components/record-item/record-item"
-  }
+  "usingComponents": {},
+  "enablePullDownRefresh": true
 }

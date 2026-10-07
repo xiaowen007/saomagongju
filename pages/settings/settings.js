@@ -3,6 +3,19 @@ const cloud = require('../../utils/cloud.js');
 
 Page({
   data: {
+    userInfo: {},
+    userId: 'oOSb75P9T_SK...',
+    qrCodeUrl: '',
+    commonMenus: [
+      { key: 'scanSettings', name: '扫码设置', desc: '调整扫码类型、提示音和识别体验', icon: '⊞', bg: '#5B6CFF' },
+      { key: 'historyExport', name: '历史导出', desc: '查看已导出的文件记录和处理结果', icon: '⬆', bg: '#00C853' },
+      { key: 'dataRecycle', name: '数据回收', desc: '回收误删数据，集中管理回收内容', icon: '🗑', bg: '#FF5B5B' }
+    ],
+    serviceMenus: [
+      { key: 'version', name: '当前版本', desc: '检查当前小程序版本和更新状态', icon: 'ⓥ', bg: '#7C4DFF', extra: 'V2.6.7' },
+      { key: 'share', name: '分享好友', desc: '把这款工具推荐给团队伙伴或朋友', icon: '⇧', bg: '#FF9C00' },
+      { key: 'contact', name: '联系客服', desc: '遇到问题可直接联系官方客服支持', icon: '☎', bg: '#29B6F6' }
+    ],
     settings: {
       storageMode: 'local',
       cloudEnv: '',
@@ -13,32 +26,83 @@ Page({
 
   onShow() {
     const app = getApp();
-    this.setData({ settings: { ...app.globalData.settings } });
+    this.setData({
+      settings: { ...app.globalData.settings },
+      userInfo: app.globalData.userInfo || {}
+    });
+    this.loadUserId();
   },
 
-  goCloud() {
-    wx.navigateTo({ url: '/pages/cloud/cloud' });
-  },
-
-  toggleAutoSync(e) {
-    const autoSync = e.detail.value;
-    this.updateSettings({ autoSync });
-    if (autoSync && !cloud.isCloudReady()) {
-      wx.showToast({ title: '请先配置云环境', icon: 'none' });
+  loadUserId() {
+    if (cloud.isCloudReady()) {
+      cloud.getOpenId()
+        .then(id => this.setData({ userId: `${id.slice(0, 12)}...` }))
+        .catch(() => {});
     }
   },
 
-  updateThreshold(e) {
-    const val = parseInt(e.detail.value, 10);
-    if (!isNaN(val) && val > 0) {
-      this.updateSettings({ warnThreshold: val });
+  chooseAvatar() {
+    wx.getUserProfile({
+      desc: '用于完善个人资料',
+      success: (res) => {
+        const app = getApp();
+        app.globalData.userInfo = res.userInfo;
+        this.setData({ userInfo: res.userInfo });
+      }
+    });
+  },
+
+  upgrade() {
+    wx.showModal({
+      title: '开通正式版',
+      content: '正式版包含更多高级功能，如多设备云同步、数据恢复等。',
+      showCancel: false
+    });
+  },
+
+  onMenuTap(e) {
+    const { key } = e.currentTarget.dataset.item;
+    switch (key) {
+      case 'scanSettings':
+        wx.showModal({ title: '扫码设置', content: '当前支持条形码与二维码识别。', showCancel: false });
+        break;
+      case 'historyExport':
+        this.exportData();
+        break;
+      case 'dataRecycle':
+        wx.navigateTo({ url: '/pages/cloud/cloud?tab=recycle' });
+        break;
+      case 'version':
+        wx.showModal({ title: '当前版本', content: 'V2.6.7', showCancel: false });
+        break;
+      case 'share':
+        wx.showShareMenu({ withShareTicket: true });
+        break;
+      case 'contact':
+        wx.openCustomerServiceChat({ extInfo: {}, corpId: '' });
+        break;
     }
   },
 
-  updateSettings(patch) {
-    const settings = { ...this.data.settings, ...patch };
-    this.setData({ settings });
-    getApp().saveSettings(settings);
+  getQRCode() {
+    wx.showLoading({ title: '生成中' });
+    wx.cloud.callFunction({
+      name: 'getMiniProgramCode',
+      success: res => {
+        wx.hideLoading();
+        if (res.result && res.result.url) {
+          this.setData({ qrCodeUrl: res.result.url });
+        }
+      },
+      fail: () => {
+        wx.hideLoading();
+        wx.showModal({
+          title: '提示',
+          content: '小程序码需部署 cloudfunctions/getMiniProgramCode 云函数，当前为占位演示。',
+          showCancel: false
+        });
+      }
+    });
   },
 
   exportData() {
@@ -49,28 +113,8 @@ Page({
       filePath,
       data: JSON.stringify(data, null, 2),
       encoding: 'utf8',
-      success: () => {
-        wx.openDocument({ filePath, fileType: 'json' });
-      },
-      fail: () => {
-        wx.showToast({ title: '导出失败', icon: 'none' });
-      }
-    });
-  },
-
-  clearAllData() {
-    wx.showModal({
-      title: '危险操作',
-      content: '将清空所有扫码记录、生成记录和库存数据，是否继续？',
-      confirmColor: '#FF5B5B',
-      success: (res) => {
-        if (res.confirm) {
-          storage.clearScanRecords();
-          storage.clearGenerateRecords();
-          storage.clearInventory();
-          wx.showToast({ title: '已清空', icon: 'success' });
-        }
-      }
+      success: () => wx.openDocument({ filePath, fileType: 'json' }),
+      fail: () => wx.showToast({ title: '导出失败', icon: 'none' })
     });
   }
 });

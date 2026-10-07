@@ -3,8 +3,16 @@ const cloud = require('../../utils/cloud.js');
 
 Page({
   data: {
+    activeTab: 'cloud',
     cloudEnv: '',
-    cloudReady: false
+    cloudReady: false,
+    recycleBin: []
+  },
+
+  onLoad(options) {
+    const tab = options.tab || 'cloud';
+    this.setData({ activeTab: tab });
+    this.loadRecycle();
   },
 
   onShow() {
@@ -13,7 +21,43 @@ Page({
       cloudEnv: app.globalData.settings.cloudEnv || '',
       cloudReady: app.globalData.cloudInitialized
     });
+    this.loadRecycle();
   },
+
+  switchTab(e) {
+    const tab = e.currentTarget.dataset.tab;
+    this.setData({ activeTab: tab });
+    if (tab === 'recycle') this.loadRecycle();
+  },
+
+  loadRecycle() {
+    const bin = storage.getRecycleBin().map(r => ({
+      ...r,
+      deletedAt: storage.formatDate(r.deletedAt)
+    }));
+    this.setData({ recycleBin: bin });
+  },
+
+  restore(e) {
+    const id = e.currentTarget.dataset.id;
+    storage.restoreFromRecycleBin(id);
+    this.loadRecycle();
+    wx.showToast({ title: '已恢复', icon: 'success' });
+  },
+
+  clearRecycle() {
+    wx.showModal({
+      title: '确认清空',
+      content: '清空后无法恢复，是否继续？',
+      success: (res) => {
+        if (res.confirm) {
+          storage.clearRecycleBin();
+          this.loadRecycle();
+        }
+      }
+    });
+  },
+
 
   onInput(e) {
     this.setData({ cloudEnv: e.detail.value });
