@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>库存扫码助手 - 小程序预览</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #f5f7fa;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+    .phone {
+      width: 375px;
+      background: #fff;
+      border-radius: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      overflow: hidden;
+      position: relative;
+    }
+    .status-bar {
+      height: 44px;
+      background: #5B6CFF;
+    }
+    .nav-bar {
+      height: 44px;
+      background: #5B6CFF;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      font-weight: 500;
+      position: relative;
+    }
+    .nav-actions {
+      position: absolute;
+      right: 16px;
+      display: flex;
+      gap: 12px;
+      font-size: 18px;
+    }
+    .content {
+      background: #F5F7FA;
+      min-height: 640px;
+      padding: 16px;
+    }
+    .notice {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .notice-badge {
+      background: #FFF4E6;
+      color: #FF9C00;
+      font-size: 12px;
+      padding: 4px 8px;
+      border-radius: 6px;
+      margin-right: 12px;
+      height: fit-content;
+    }
+    .notice-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 4px;
+    }
+    .notice-text {
+      font-size: 13px;
+      color: #999;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .card {
+      border-radius: 18px;
+      padding: 18px;
+      color: #fff;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .card-icon { font-size: 28px; margin-bottom: 8px; }
+    .card-title { font-size: 17px; font-weight: 600; }
+    .card-desc { font-size: 12px; opacity: 0.85; margin-top: 4px; }
+    .generate-card {
+      background: #EEF5FF;
+      border-radius: 18px;
+      padding: 18px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+    .generate-icon {
+      width: 48px;
+      height: 48px;
+      background: #fff;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-right: 14px;
+    }
+    .generate-title { font-size: 16px; font-weight: 600; color: #333; margin-bottom: 4px; }
+    .generate-desc { font-size: 13px; color: #888; }
+    .generate-arrow { margin-left: auto; color: #bbb; font-size: 24px; }
+    .tab-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 64px;
+      background: #fff;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #f0f0f0;
+      padding-bottom: 10px;
+    }
+    .tab { text-align: center; color: #999; }
+    .tab.active { color: #5B6CFF; }
+    .tab-icon { font-size: 24px; margin-bottom: 2px; }
+    .tab-text { font-size: 11px; }
+  </style>
+</head>
+<body>
+  <div class="phone">
+    <div class="status-bar"></div>
+    <div class="nav-bar">
+      首页
+      <div class="nav-actions">⋯ − ⦿</div>
+    </div>
+    <div class="content">
+      <div class="notice">
+        <div class="notice-badge">公告</div>
+        <div>
+          <div class="notice-title">V2.5.9 新版本发布</div>
+          <div class="notice-text">本次在不影响原有功能和使用习惯的前提下对局部界面UI优化。</div>
+        </div>
+      </div>
+
+      <div class="grid">
+        <div class="card" style="background: linear-gradient(135deg, #C56BF3 0%, #9A4DFF 100%);">
+          <div class="card-icon">⊞</div>
+          <div>
+            <div class="card-title">单次扫码</div>
+            <div class="card-desc">识别后进入详情</div>
+          </div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #00C853 0%, #009624 100%);">
+          <div class="card-icon">⇄</div>
+          <div>
+            <div class="card-title">连续扫码</div>
+            <div class="card-desc">适合高频操作</div>
+          </div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #FFB300 0%, #FF8F00 100%);">
+          <div class="card-icon">∞</div>
+          <div>
+            <div class="card-title">标签比对</div>
+            <div class="card-desc">双标签自动比对</div>
+          </div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #29B6F6 0%, #0288D1 100%);">
+          <div class="card-icon">✉</div>
+          <div>
+            <div class="card-title">图片批量解码</div>
+            <div class="card-desc">导入图片识别</div>
+          </div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #26A69A 0%, #00897B 100%);">
+          <div class="card-icon">▤</div>
+          <div>
+            <div class="card-title">扫码累加</div>
+            <div class="card-desc">重量数量金额汇总</div>
+          </div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #78909C 0%, #546E7A 100%);">
+          <div class="card-icon">☰</div>
+          <div>
+            <div class="card-title">单次扫码记录</div>
+            <div class="card-desc">查看单次扫码历史</div>
+          </div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #7C4DFF 0%, #536DFE 100%);">
+          <div class="card-icon">▌</div>
+          <div>
+            <div class="card-title">条形码生成</div>
+            <div class="card-desc">支持自定义内容</div>
+          </div>
+        </div>
+        <div class="card" style="background: linear-gradient(135deg, #FF6E40 0%, #FF3D00 100%);">
+          <div class="card-icon">⊕</div>
+          <div>
+            <div class="card-title">二维码生成</div>
+            <div class="card-desc">适合链接与文本</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="generate-card">
+        <div class="generate-icon">📝</div>
+        <div>
+          <div class="generate-title">生成记录</div>
+          <div class="generate-desc">查看已生成的条形码和二维码历史</div>
+        </div>
+        <div class="generate-arrow">›</div>
+      </div>
+    </div>
+
+    <div class="tab-bar">
+      <div class="tab active">
+        <div class="tab-icon">⊞</div>
+        <div class="tab-text">首页</div>
+      </div>
+      <div class="tab">
+        <div class="tab-icon">▦</div>
+        <div class="tab-text">批量扫码</div>
+      </div>
+      <div class="tab">
+        <div class="tab-icon">▤</div>
+        <div class="tab-text">盘点</div>
+      </div>
+      <div class="tab">
+        <div class="tab-icon">⚙</div>
+        <div class="tab-text">设置</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

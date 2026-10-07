@@ -3,3 +3,9 @@ miniprogram_npm/
 project.private.config.json
 .DS_Store
 *.log
+# 微信上传密钥（机密，禁止提交）
+*.key
+private.key
+deploy/*.key
+# CI 临时文件
+web/.cache/
