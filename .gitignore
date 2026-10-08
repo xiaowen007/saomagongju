@@ -9,3 +9,10 @@ private.key
 deploy/*.key
 # CI 临时文件
 web/.cache/
+# 环境变量与本地密钥（机密，禁止提交）
+.env
+.env.*
+config.local.js
+config.local.json
+# 小程序密钥 AppSecret（机密，禁止提交）
+*.appsecret
