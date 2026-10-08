@@ -10,13 +10,25 @@
  */
 const ci = require('miniprogram-ci');
 const path = require('path');
+const fs = require('fs');
 
-const appid = process.env.WX_APPID;
-const privateKeyPath = process.env.WX_PRIVATE_KEY_PATH;
 const projectPath = path.resolve(__dirname, '..');
 
+// AppID 优先级：环境变量 WX_APPID > project.config.json 中的 appid
+let appid = process.env.WX_APPID;
+if (!appid) {
+  try {
+    const cfg = JSON.parse(fs.readFileSync(path.join(projectPath, 'project.config.json'), 'utf-8'));
+    appid = cfg.appid && cfg.appid !== 'touristappid' ? cfg.appid : '';
+  } catch (e) {
+    appid = '';
+  }
+}
+
+const privateKeyPath = process.env.WX_PRIVATE_KEY_PATH;
+
 if (!appid || !privateKeyPath) {
-  console.error('缺少环境变量 WX_APPID 或 WX_PRIVATE_KEY_PATH');
+  console.error('缺少 AppID（请设置 WX_APPID 或在 project.config.json 中填写真实 AppID）或上传密钥 WX_PRIVATE_KEY_PATH');
   process.exit(1);
 }
 
