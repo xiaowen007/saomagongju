@@ -28,7 +28,7 @@ jobs:
         run: npm install
 
       - name: 写入上传密钥
-        run: echo "${{ secrets.WX_UPLOAD_KEY }}" > ./private.key
+        run: printf '%s' "${{ secrets.WX_UPLOAD_KEY }}" | tr -d '\r' > ./private.key
 
       - name: 上传小程序
         env:
