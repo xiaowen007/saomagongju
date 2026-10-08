@@ -24,8 +24,8 @@ jobs:
         with:
           node-version: '20'
 
-      - name: 安装 miniprogram-ci
-        run: npm install miniprogram-ci
+      - name: 安装依赖（从 package.json）
+        run: npm install
 
       - name: 写入上传密钥
         run: echo "${{ secrets.WX_UPLOAD_KEY }}" > ./private.key
